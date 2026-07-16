@@ -1,4 +1,4 @@
-# Mirai PINN Energy Management
+# Mirai PINN Power Management
 
 [![tests](https://github.com/OWNER/mirai-pinn-energy-management/actions/workflows/tests.yml/badge.svg)](https://github.com/OWNER/mirai-pinn-energy-management/actions/workflows/tests.yml)
 
