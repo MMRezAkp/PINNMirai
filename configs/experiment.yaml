@@ -1,0 +1,14 @@
+seed: 42
+battery:
+  capacity_ah: 23.51
+  nominal_voltage_v: 245.0
+  current_positive_is: discharge
+transfer:
+  source_features: [voltage_v, current_a, temperature_k]
+  freeze_encoder_epochs: 5
+training:
+  learning_rate: 0.001
+  epochs: 50
+validation:
+  split: chronological_cycle_holdout
+  metrics: [rmse, mae, max_error, soc_bound_violations]

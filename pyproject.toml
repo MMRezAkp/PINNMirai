@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mirai-pinn-energy-management"
+version = "0.1.0"
+description = "Physics-informed, transfer-learned battery SOC estimation for fuel-cell hybrid energy management."
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "pandas>=2.0", "openpyxl>=3.1", "torch>=2.1", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
