@@ -7,3 +7,10 @@
 | `test_fusion.py` | tensor interface and bounded SOC/gate outputs |
 
 These unit tests are not evidence of vehicle accuracy. For an experiment, use chronological cycle-level held-out splits to avoid near-duplicate sequence leakage; fit scaling only on the train split; include an ambient-temperature or drive-cycle out-of-distribution test; and compare with Coulomb counting, the original notebook state, and raw CAN SOC only when it is trusted as reference.
+# Controller validation
+
+`pytest -q` checks route schema/split validation, power projection, finite
+surrogate transitions, fused-SOC policy inputs, SAC updates, and held-out
+metric reports. Run `python -m compileall src scripts` after command-line
+changes. A generalization experiment must preserve disjoint train/evaluation
+route identities and report each unseen route as well as the aggregate.

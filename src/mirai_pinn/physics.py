@@ -19,3 +19,19 @@ def coulomb_count_step(soc: torch.Tensor, current_a: torch.Tensor, dt_s: torch.T
 def ocv_from_soc(soc: torch.Tensor) -> torch.Tensor:
     """Polynomial copied from the supplied Mirai surrogate; calibrate before use."""
     return 1722.4*soc**5 - 4747.5*soc**4 + 4891.9*soc**3 - 2312.1*soc**2 + 525.72*soc + 200.06
+
+def safe_quadratic_current(open_circuit_voltage_v: float, resistance_ohm: float,
+                           power_w: float, charging: bool = False) -> tuple[float, bool]:
+    """Solve the notebook battery-current quadratic without emitting NaNs.
+
+    The boolean is true when an infeasible discharge discriminant was clipped
+    to zero.  Positive returned current denotes discharge.
+    """
+    resistance = max(float(resistance_ohm), 1e-9)
+    voltage = max(float(open_circuit_voltage_v), 1e-6)
+    if charging:
+        discriminant = voltage * voltage + 4.0 * resistance * max(float(power_w), 0.0)
+        return (-voltage + discriminant**0.5) / (2.0 * resistance), False
+    discriminant = voltage * voltage - 4.0 * resistance * max(float(power_w), 0.0)
+    clipped = discriminant < 0.0
+    return (voltage - max(discriminant, 0.0)**0.5) / (2.0 * resistance), clipped

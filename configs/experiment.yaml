@@ -12,3 +12,16 @@ training:
 validation:
   split: chronological_cycle_holdout
   metrics: [rmse, mae, max_error, soc_bound_violations]
+routes:
+  # Names must be unique across train and evaluation lists.
+  train: [UDDS_train]
+  evaluation: [WLTP_unseen, highway_unseen]
+controller:
+  max_fc_power_kw: 112.0
+  max_battery_power_kw: 22.4
+  initial_soc: 0.6
+  initial_temperature_k: 298.15
+sac:
+  episodes: 100
+  batch_size: 128
+  learning_rate: 0.0005

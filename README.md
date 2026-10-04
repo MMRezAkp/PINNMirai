@@ -55,3 +55,21 @@ Read [the model/fusion notes](docs/model_and_fusion.md), [battery/data statement
 ## Safety and limitations
 
 This is research code. It does not command a vehicle, replace an automotive BMS, or validate safety limits. Validate against held-out target-vehicle cycles and enforce independent SOC, current, voltage and temperature bounds before hardware-in-the-loop work.
+
+## SAC controller and unseen-route evaluation
+
+The SAC module exposes the notebook's reduced-order Mirai model as a
+constrained environment. Its action is one normalized fuel-cell-power command;
+the environment owns all power projection. Normal observations use fused SOC,
+not true SOC. Route CSVs require `time_s`, `speed_mps`, and optional
+`road_grade_deg`; training and evaluation names must not overlap.
+
+```powershell
+python scripts\train_sac.py --train UDDS=data\routes\udds.csv --evaluation WLTP=data\routes\wltp.csv --episodes 100 --checkpoint artifacts\sac_mirai.pt
+python scripts\evaluate_sac.py --checkpoint artifacts\sac_mirai.pt --routes WLTP=data\routes\wltp.csv --output artifacts\wltp_report.csv
+```
+
+Held-out reports include reward/cost, hydrogen use, terminal SOC, health
+change, constraint counts, and fused-SOC error. `--oracle-soc` is a diagnostic
+baseline only. Results evaluate a specified route split; they do not prove
+generalization or vehicle readiness.
